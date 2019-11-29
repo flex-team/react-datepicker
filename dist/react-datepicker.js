@@ -929,7 +929,7 @@
           );
         }
         return (
-          fe(r, t.Component),
+          fe(r, e),
           de(r, [
             {
               key: "render",
@@ -949,7 +949,7 @@
           ]),
           r
         );
-      })()
+      })(t.Component)
     ),
     at = (function(e) {
       function r() {
@@ -1055,7 +1055,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(r, [
           {
             key: "render",
@@ -1082,7 +1082,7 @@
         ]),
         r
       );
-    })(),
+    })(t.Component),
     ot = oe(
       (function(e) {
         function r() {
@@ -1132,7 +1132,7 @@
           );
         }
         return (
-          fe(r, t.Component),
+          fe(r, e),
           de(r, [
             {
               key: "render",
@@ -1147,7 +1147,7 @@
           ]),
           r
         );
-      })()
+      })(t.Component)
     ),
     st = (function(e) {
       function r() {
@@ -1225,7 +1225,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(r, [
           {
             key: "render",
@@ -1267,7 +1267,7 @@
         ]),
         r
       );
-    })();
+    })(t.Component);
   function pt(e, t) {
     for (var r = [], n = Ee(e), a = Ee(t); !Z(n, a); )
       r.push(_e(n)), (n = l(n, 1));
@@ -1324,7 +1324,7 @@
           );
         }
         return (
-          fe(r, t.Component),
+          fe(r, e),
           de(r, [
             {
               key: "render",
@@ -1344,7 +1344,7 @@
           ]),
           r
         );
-      })()
+      })(t.Component)
     ),
     ct = (function(e) {
       function r() {
@@ -1445,7 +1445,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(r, [
           {
             key: "render",
@@ -1472,7 +1472,7 @@
         ]),
         r
       );
-    })(),
+    })(t.Component),
     dt = (function(e) {
       function r() {
         var e, t;
@@ -1617,7 +1617,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(r, [
           {
             key: "render",
@@ -1644,7 +1644,7 @@
         ]),
         r
       );
-    })(),
+    })(t.Component),
     lt = (function(e) {
       function r() {
         var e, t;
@@ -1663,7 +1663,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(r, [
           {
             key: "render",
@@ -1686,7 +1686,7 @@
         ]),
         r
       );
-    })(),
+    })(t.Component),
     ut = (function(e) {
       function r() {
         var e, n;
@@ -1762,7 +1762,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(
           r,
           [
@@ -1788,7 +1788,7 @@
         ),
         r
       );
-    })(),
+    })(t.Component),
     ht = 6,
     ft = (function(e) {
       function r() {
@@ -1951,10 +1951,12 @@
             );
           }),
           le(we(a), "renderMonths", function() {
-            return [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]].map(function(
-              e,
-              r
-            ) {
+            return [
+              [0, 1, 2],
+              [3, 4, 5],
+              [6, 7, 8],
+              [9, 10, 11]
+            ].map(function(e, r) {
               return t.createElement(
                 "div",
                 { className: "react-datepicker__month-wrapper", key: r },
@@ -2012,7 +2014,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(r, [
           {
             key: "render",
@@ -2039,7 +2041,7 @@
         ]),
         r
       );
-    })(),
+    })(t.Component),
     mt = (function(e) {
       function r() {
         var e, n;
@@ -2120,7 +2122,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(
           r,
           [
@@ -2211,7 +2213,7 @@
         ),
         r
       );
-    })();
+    })(t.Component);
   le(mt, "calcCenterPosition", function(e, t) {
     return t.offsetTop - (e / 2 - t.clientHeight / 2);
   });
@@ -2234,7 +2236,7 @@
       );
     }
     return (
-      fe(r, t.Component),
+      fe(r, e),
       de(r, [
         {
           key: "render",
@@ -2275,7 +2277,7 @@
       ]),
       r
     );
-  })();
+  })(t.Component);
   function wt(e) {
     var r = e.className,
       n = e.children,
@@ -2358,7 +2360,7 @@
             );
           }),
           le(we(n), "handleDayClick", function(e, t, r) {
-            return n.props.onSelect(e, t, r);
+            n.props.onSelect(e, t, r), n.props.onClickDay(e, t, r);
           }),
           le(we(n), "handleDayMouseEnter", function(e) {
             n.setState({ selectingDate: e }),
@@ -2676,7 +2678,7 @@
                   for (var t = 1; t < arguments.length; t++) {
                     var r = null != arguments[t] ? arguments[t] : {};
                     t % 2
-                      ? he(r, !0).forEach(function(t) {
+                      ? he(Object(r), !0).forEach(function(t) {
                           le(e, t, r[t]);
                         })
                       : Object.getOwnPropertyDescriptors
@@ -2684,7 +2686,7 @@
                           e,
                           Object.getOwnPropertyDescriptors(r)
                         )
-                      : he(r).forEach(function(t) {
+                      : he(Object(r)).forEach(function(t) {
                           Object.defineProperty(
                             e,
                             t,
@@ -2839,7 +2841,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(r, null, [
           {
             key: "defaultProps",
@@ -2910,13 +2912,13 @@
         ]),
         r
       );
-    })(),
+    })(t.Component),
     kt = (function(e) {
       function r() {
         return ie(this, r), De(this, me(r).apply(this, arguments));
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(
           r,
           [
@@ -2991,7 +2993,7 @@
         ),
         r
       );
-    })(),
+    })(t.Component),
     Ct = "react-datepicker-ignore-onclickoutside",
     _t = oe(gt);
   var bt = "Date input not valid.",
@@ -3402,7 +3404,7 @@
         );
       }
       return (
-        fe(r, t.Component),
+        fe(r, e),
         de(r, null, [
           {
             key: "defaultProps",
@@ -3535,7 +3537,7 @@
         ]),
         r
       );
-    })(),
+    })(t.Component),
     Mt = "input",
     Ot = "navigate";
   (e.CalendarContainer = wt),

@@ -144,12 +144,12 @@ function _objectSpread2(e) {
   for (var t = 1; t < arguments.length; t++) {
     var r = null != arguments[t] ? arguments[t] : {};
     t % 2
-      ? ownKeys(r, !0).forEach(function(t) {
+      ? ownKeys(Object(r), !0).forEach(function(t) {
           _defineProperty(e, t, r[t]);
         })
       : Object.getOwnPropertyDescriptors
       ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(r))
-      : ownKeys(r).forEach(function(t) {
+      : ownKeys(Object(r)).forEach(function(t) {
           Object.defineProperty(e, t, Object.getOwnPropertyDescriptor(r, t));
         });
   }
@@ -1992,10 +1992,12 @@ var MonthYearDropdownOptions = (function(e) {
           }
         ),
         _defineProperty(_assertThisInitialized(r), "renderMonths", function() {
-          return [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]].map(function(
-            e,
-            t
-          ) {
+          return [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [9, 10, 11]
+          ].map(function(e, t) {
             return React.createElement(
               "div",
               { className: "react-datepicker__month-wrapper", key: t },
@@ -2437,7 +2439,7 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
           t,
           n
         ) {
-          return r.props.onSelect(e, t, n);
+          r.props.onSelect(e, t, n), r.props.onClickDay(e, t, n);
         }),
         _defineProperty(
           _assertThisInitialized(r),

@@ -85,6 +85,7 @@ export default class Calendar extends React.Component {
     forceShowMonthNavigation: PropTypes.bool,
     onDropdownFocus: PropTypes.func,
     onSelect: PropTypes.func.isRequired,
+    onClickDay: PropTypes.func.isRequired,
     onWeekSelect: PropTypes.func,
     showTimeSelect: PropTypes.bool,
     showTimeInput: PropTypes.bool,
@@ -240,8 +241,10 @@ export default class Calendar extends React.Component {
     );
   };
 
-  handleDayClick = (day, event, monthSelectedIn) =>
+  handleDayClick = (day, event, monthSelectedIn) => {
     this.props.onSelect(day, event, monthSelectedIn);
+    this.props.onClickDay(day, event, monthSelectedIn);
+  };
 
   handleDayMouseEnter = day => {
     this.setState({ selectingDate: day });
