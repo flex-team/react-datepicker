@@ -2818,11 +2818,12 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
                   nextYearButtonDisabled: i
                 })
               ),
-              React.createElement(
-                "div",
-                { className: "react-datepicker__day-names" },
-                r.header(t)
-              )
+              !r.props.showMonthYearPicker &&
+                React.createElement(
+                  "div",
+                  { className: "react-datepicker__day-names" },
+                  r.header(t)
+                )
             );
           }
         ),
