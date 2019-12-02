@@ -102,6 +102,7 @@ export default class DatePicker extends React.Component {
     onBlur: PropTypes.func,
     onChange: PropTypes.func.isRequired,
     onSelect: PropTypes.func,
+    onClickDay: PropTypes.func,
     onWeekSelect: PropTypes.func,
     onClickOutside: PropTypes.func,
     onChangeRaw: PropTypes.func,
@@ -191,6 +192,7 @@ export default class DatePicker extends React.Component {
       onKeyDown() {},
       onInputClick() {},
       onSelect() {},
+      onClickDay() {},
       onClickOutside() {},
       onMonthChange() {},
       onCalendarOpen() {},
@@ -652,6 +654,7 @@ export default class DatePicker extends React.Component {
         selected={this.props.selected}
         preSelection={this.state.preSelection}
         onSelect={this.handleSelect}
+        onClickDay={this.props.onClickDay}
         onWeekSelect={this.props.onWeekSelect}
         openToDate={this.props.openToDate}
         minDate={this.props.minDate}
