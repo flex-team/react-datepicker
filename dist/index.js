@@ -68,6 +68,9 @@ var dfIsEqual = _interopDefault(require("date-fns/isEqual")),
   toDate = _interopDefault(require("date-fns/toDate")),
   parse = _interopDefault(require("date-fns/parse")),
   parseISO = _interopDefault(require("date-fns/parseISO")),
+  longFormatters = _interopDefault(
+    require("date-fns/_lib/format/longFormatters")
+  ),
   onClickOutside = _interopDefault(require("react-onclickoutside")),
   reactPopper = require("react-popper");
 function _typeof(e) {
@@ -189,58 +192,7 @@ function _possibleConstructorReturn(e, t) {
     ? _assertThisInitialized(e)
     : t;
 }
-function dateLongFormatter(e, t) {
-  switch (e) {
-    case "P":
-      return t.date({ width: "short" });
-    case "PP":
-      return t.date({ width: "medium" });
-    case "PPP":
-      return t.date({ width: "long" });
-    case "PPPP":
-    default:
-      return t.date({ width: "full" });
-  }
-}
-function timeLongFormatter(e, t) {
-  switch (e) {
-    case "p":
-      return t.time({ width: "short" });
-    case "pp":
-      return t.time({ width: "medium" });
-    case "ppp":
-      return t.time({ width: "long" });
-    case "pppp":
-    default:
-      return t.time({ width: "full" });
-  }
-}
-function dateTimeLongFormatter(e, t) {
-  var r,
-    n = e.match(/(P+)(p+)?/),
-    a = n[1],
-    o = n[2];
-  if (!o) return dateLongFormatter(e, t);
-  switch (a) {
-    case "P":
-      r = t.dateTime({ width: "short" });
-      break;
-    case "PP":
-      r = t.dateTime({ width: "medium" });
-      break;
-    case "PPP":
-      r = t.dateTime({ width: "long" });
-      break;
-    case "PPPP":
-    default:
-      r = t.dateTime({ width: "full" });
-  }
-  return r
-    .replace("{{date}}", dateLongFormatter(a, t))
-    .replace("{{time}}", timeLongFormatter(o, t));
-}
-var longFormatters = { p: timeLongFormatter, P: dateTimeLongFormatter },
-  longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;
+var longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;
 function newDate(e) {
   var t = e
     ? "string" == typeof e || e instanceof String
@@ -252,18 +204,18 @@ function newDate(e) {
 function parseDate(e, t, r, n) {
   var a = null,
     o = getLocaleObject(r) || getDefaultLocale(),
-    i = !0;
+    s = !0;
   return Array.isArray(t)
     ? (t.forEach(function(t) {
         var r = parse(e, t, new Date(), { locale: o });
         n &&
-          (i = isValid(r) && e === format(r, t, { awareOfUnicodeTokens: !0 })),
-          isValid(r) && i && (a = r);
+          (s = isValid(r) && e === format(r, t, { awareOfUnicodeTokens: !0 })),
+          isValid(r) && s && (a = r);
       }),
       a)
     : ((a = parse(e, t, new Date(), { locale: o })),
       n
-        ? (i = isValid(a) && e === format(a, t, { awareOfUnicodeTokens: !0 }))
+        ? (s = isValid(a) && e === format(a, t, { awareOfUnicodeTokens: !0 }))
         : isValid(a) ||
           ((t = t
             .match(longFormattingTokensRegExp)
@@ -278,7 +230,7 @@ function parseDate(e, t, r, n) {
             .join("")),
           e.length > 0 && (a = parse(e, t.slice(0, e.length), new Date())),
           isValid(a) || (a = new Date(e))),
-      isValid(a) && i ? a : null);
+      isValid(a) && s ? a : null);
 }
 function isValid(e) {
   return isValidDate(e) && isAfter(e, new Date("1/1/1000"));
@@ -312,8 +264,8 @@ function setTime(e, t) {
     n = void 0 === r ? 0 : r,
     a = t.minute,
     o = void 0 === a ? 0 : a,
-    i = t.second;
-  return setHours(setMinutes(setSeconds(e, void 0 === i ? 0 : i), o), n);
+    s = t.second;
+  return setHours(setMinutes(setSeconds(e, void 0 === s ? 0 : s), o), n);
 }
 function getWeek(e) {
   return isSameYear(endOfWeek(e), e)
@@ -406,7 +358,7 @@ function isDayDisabled(e) {
     n = t.maxDate,
     a = t.excludeDates,
     o = t.includeDates,
-    i = t.filterDate;
+    s = t.filterDate;
   return (
     isOutOfBounds(e, { minDate: r, maxDate: n }) ||
     (a &&
@@ -417,7 +369,7 @@ function isDayDisabled(e) {
       !o.some(function(t) {
         return isSameDay(e, t);
       })) ||
-    (i && !i(newDate(e))) ||
+    (s && !s(newDate(e))) ||
     !1
   );
 }
@@ -438,7 +390,7 @@ function isMonthDisabled(e) {
     n = t.maxDate,
     a = t.excludeDates,
     o = t.includeDates,
-    i = t.filterDate;
+    s = t.filterDate;
   return (
     isOutOfBounds(e, { minDate: r, maxDate: n }) ||
     (a &&
@@ -449,20 +401,20 @@ function isMonthDisabled(e) {
       !o.some(function(t) {
         return isSameMonth(e, t);
       })) ||
-    (i && !i(newDate(e))) ||
+    (s && !s(newDate(e))) ||
     !1
   );
 }
 function isMonthinRange(e, t, r, n) {
   var a = getYear(e),
     o = getMonth(e),
-    i = getYear(t),
-    s = getMonth(t),
+    s = getYear(t),
+    i = getMonth(t),
     p = getYear(n);
-  return a === i && a === p
-    ? o <= r && r <= s
-    : a < i
-    ? (p === a && o <= r) || (p === i && s >= r) || (p < i && p > a)
+  return a === s && a === p
+    ? o <= r && r <= i
+    : a < s
+    ? (p === a && o <= r) || (p === s && i >= r) || (p < s && p > a)
     : void 0;
 }
 function isQuarterDisabled(e) {
@@ -471,7 +423,7 @@ function isQuarterDisabled(e) {
     n = t.maxDate,
     a = t.excludeDates,
     o = t.includeDates,
-    i = t.filterDate;
+    s = t.filterDate;
   return (
     isOutOfBounds(e, { minDate: r, maxDate: n }) ||
     (a &&
@@ -482,20 +434,20 @@ function isQuarterDisabled(e) {
       !o.some(function(t) {
         return isSameQuarter(e, t);
       })) ||
-    (i && !i(newDate(e))) ||
+    (s && !s(newDate(e))) ||
     !1
   );
 }
 function isQuarterInRange(e, t, r, n) {
   var a = getYear(e),
     o = getQuarter(e),
-    i = getYear(t),
-    s = getQuarter(t),
+    s = getYear(t),
+    i = getQuarter(t),
     p = getYear(n);
-  return a === i && a === p
-    ? o <= r && r <= s
-    : a < i
-    ? (p === a && o <= r) || (p === i && s >= r) || (p < i && p > a)
+  return a === s && a === p
+    ? o <= r && r <= i
+    : a < s
+    ? (p === a && o <= r) || (p === s && i >= r) || (p < s && p > a)
     : void 0;
 }
 function isOutOfBounds(e) {
@@ -519,11 +471,11 @@ function isTimeInDisabledRange(e, t) {
   if (!r || !n) throw new Error("Both minTime and maxTime props required");
   var a,
     o = newDate(),
-    i = setHours(setMinutes(o, getMinutes(e)), getHours(e)),
-    s = setHours(setMinutes(o, getMinutes(r)), getHours(r)),
+    s = setHours(setMinutes(o, getMinutes(e)), getHours(e)),
+    i = setHours(setMinutes(o, getMinutes(r)), getHours(r)),
     p = setHours(setMinutes(o, getMinutes(n)), getHours(n));
   try {
-    a = !isWithinInterval(i, { start: s, end: p });
+    a = !isWithinInterval(s, { start: i, end: p });
   } catch (e) {
     a = !1;
   }
@@ -622,16 +574,16 @@ function getHightLightDaysMap() {
   ) {
     var o = e[n];
     if (isDate(o)) {
-      var i = formatDate(o, "MM.dd.yyyy"),
-        s = r.get(i) || [];
-      s.includes(t) || (s.push(t), r.set(i, s));
+      var s = formatDate(o, "MM.dd.yyyy"),
+        i = r.get(s) || [];
+      i.includes(t) || (i.push(t), r.set(s, i));
     } else if ("object" === _typeof(o)) {
       var p = Object.keys(o),
         c = p[0],
-        d = o[p[0]];
-      if ("string" == typeof c && d.constructor === Array)
-        for (var l = 0, u = d.length; l < u; l++) {
-          var h = formatDate(d[l], "MM.dd.yyyy"),
+        l = o[p[0]];
+      if ("string" == typeof c && l.constructor === Array)
+        for (var d = 0, u = l.length; d < u; d++) {
+          var h = formatDate(l[d], "MM.dd.yyyy"),
             f = r.get(h) || [];
           f.includes(c) || (f.push(c), r.set(h, f));
         }
@@ -640,21 +592,21 @@ function getHightLightDaysMap() {
   return r;
 }
 function timesToInjectAfter(e, t, r, n, a) {
-  for (var o = a.length, i = [], s = 0; s < o; s++) {
-    var p = addMinutes(addHours(e, getHours(a[s])), getMinutes(a[s])),
+  for (var o = a.length, s = [], i = 0; i < o; i++) {
+    var p = addMinutes(addHours(e, getHours(a[i])), getMinutes(a[i])),
       c = addMinutes(e, (r + 1) * n);
-    isAfter(p, t) && isBefore(p, c) && i.push(a[s]);
+    isAfter(p, t) && isBefore(p, c) && s.push(a[i]);
   }
-  return i;
+  return s;
 }
 function addZero(e) {
   return e < 10 ? "0".concat(e) : "".concat(e);
 }
 function generateYears(e, t, r, n) {
   for (var a = [], o = 0; o < 2 * t + 1; o++) {
-    var i = e + t - o,
-      s = !0;
-    r && (s = getYear(r) <= i), n && s && (s = getYear(n) >= i), s && a.push(i);
+    var s = e + t - o,
+      i = !0;
+    r && (i = getYear(r) <= s), n && i && (i = getYear(n) >= s), i && a.push(s);
   }
   return a;
 }
@@ -1494,14 +1446,14 @@ var MonthYearDropdownOptions = (function(e) {
               n = e.selectsStart,
               a = e.selectsEnd,
               o = e.selectingDate,
-              i = e.startDate,
-              s = e.endDate;
+              s = e.startDate,
+              i = e.endDate;
             return (
               !((!n && !a) || !o || r.isDisabled()) &&
-              (n && s && (isBefore(o, s) || isEqual(o, s))
-                ? isDayInRange(t, o, s)
-                : !(!a || !i || (!isAfter(o, i) && !isEqual(o, i))) &&
-                  isDayInRange(t, i, o))
+              (n && i && (isBefore(o, i) || isEqual(o, i))
+                ? isDayInRange(t, o, i)
+                : !(!a || !s || (!isAfter(o, s) && !isEqual(o, s))) &&
+                  isDayInRange(t, s, o))
             );
           }
         ),
@@ -1911,9 +1863,9 @@ var MonthYearDropdownOptions = (function(e) {
 
           ) {
             a++, (n = utils$1(n, 1));
-            var i = t && a >= FIXED_HEIGHT_STANDARD_WEEK_COUNT,
-              s = !t && !r.isWeekInMonth(n);
-            if (i || s) {
+            var s = t && a >= FIXED_HEIGHT_STANDARD_WEEK_COUNT,
+              i = !t && !r.isWeekInMonth(n);
+            if (s || i) {
               if (!r.props.peekNextMonth) break;
               o = !0;
             }
@@ -1940,17 +1892,17 @@ var MonthYearDropdownOptions = (function(e) {
               n = t.day,
               a = t.startDate,
               o = t.endDate,
-              i = t.selected,
-              s = t.minDate,
+              s = t.selected,
+              i = t.minDate,
               p = t.maxDate;
             return classnames(
               "react-datepicker__month-text",
               "react-datepicker__month-".concat(e),
               {
                 "react-datepicker__month--disabled":
-                  (s || p) && isMonthDisabled(utils$2(n, e), r.props),
+                  (i || p) && isMonthDisabled(utils$2(n, e), r.props),
                 "react-datepicker__month--selected":
-                  getMonth(n) === e && getYear(n) === getYear(i),
+                  getMonth(n) === e && getYear(n) === getYear(s),
                 "react-datepicker__month--in-range": isMonthinRange(a, o, e, n),
                 "react-datepicker__month--range-start": r.isRangeStartMonth(e),
                 "react-datepicker__month--range-end": r.isRangeEndMonth(e)
@@ -1966,17 +1918,17 @@ var MonthYearDropdownOptions = (function(e) {
               n = t.day,
               a = t.startDate,
               o = t.endDate,
-              i = t.selected,
-              s = t.minDate,
+              s = t.selected,
+              i = t.minDate,
               p = t.maxDate;
             return classnames(
               "react-datepicker__quarter-text",
               "react-datepicker__quarter-".concat(e),
               {
                 "react-datepicker__quarter--disabled":
-                  (s || p) && isQuarterDisabled(utils$3(n, e), r.props),
+                  (i || p) && isQuarterDisabled(utils$3(n, e), r.props),
                 "react-datepicker__quarter--selected":
-                  getQuarter(n) === e && getYear(n) === getYear(i),
+                  getQuarter(n) === e && getYear(n) === getYear(s),
                 "react-datepicker__quarter--in-range": isQuarterInRange(
                   a,
                   o,
@@ -2046,12 +1998,12 @@ var MonthYearDropdownOptions = (function(e) {
             n = e.selectsStart,
             a = e.selectsEnd,
             o = e.showMonthYearPicker,
-            i = e.showQuarterYearPicker;
+            s = e.showQuarterYearPicker;
           return classnames(
             "react-datepicker__month",
             { "react-datepicker__month--selecting-range": t && (n || a) },
             { "react-datepicker__monthPicker": o },
-            { "react-datepicker__quarterPicker": i }
+            { "react-datepicker__quarterPicker": s }
           );
         }),
         r
@@ -2142,21 +2094,21 @@ var MonthYearDropdownOptions = (function(e) {
               n = r.props.intervals,
               a = r.props.selected || r.props.openToDate || newDate(),
               o = getHours(a),
-              i = getMinutes(a),
-              s = getStartOfDay(newDate()),
+              s = getMinutes(a),
+              i = getStartOfDay(newDate()),
               p = 1440 / n,
               c =
                 r.props.injectTimes &&
                 r.props.injectTimes.sort(function(e, t) {
                   return e - t;
                 }),
-              d = 0;
-            d < p;
-            d++
+              l = 0;
+            l < p;
+            l++
           ) {
-            var l = addMinutes(s, d * n);
-            if ((e.push(l), c)) {
-              var u = timesToInjectAfter(s, l, d, n, c);
+            var d = addMinutes(i, l * n);
+            if ((e.push(d), c)) {
+              var u = timesToInjectAfter(i, d, l, n, c);
               e = e.concat(u);
             }
           }
@@ -2166,9 +2118,9 @@ var MonthYearDropdownOptions = (function(e) {
               {
                 key: n,
                 onClick: r.handleClick.bind(_assertThisInitialized(r), e),
-                className: r.liClasses(e, o, i),
+                className: r.liClasses(e, o, s),
                 ref: function(t) {
-                  o === getHours(e) && i >= getMinutes(e) && (r.centerLi = t);
+                  o === getHours(e) && s >= getMinutes(e) && (r.centerLi = t);
                 }
               },
               formatDate(e, t, r.props.locale)
@@ -2407,10 +2359,10 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
             n = e.selected,
             a = e.openToDate,
             o = getEffectiveMinDate(r.props),
-            i = getEffectiveMaxDate(r.props),
-            s = newDate(),
+            s = getEffectiveMaxDate(r.props),
+            i = newDate(),
             p = a || n || t;
-          return p || (o && isBefore(s, o) ? o : i && isAfter(s, i) ? i : s);
+          return p || (o && isBefore(i, o) ? o : s && isAfter(i, s) ? s : i);
         }),
         _defineProperty(_assertThisInitialized(r), "increaseMonth", function() {
           r.setState(
@@ -2796,7 +2748,7 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
             var n = monthDisabledBefore(r.state.date, r.props),
               a = monthDisabledAfter(r.state.date, r.props),
               o = yearDisabledBefore(r.state.date, r.props),
-              i = yearDisabledAfter(r.state.date, r.props);
+              s = yearDisabledAfter(r.state.date, r.props);
             return React.createElement(
               "div",
               {
@@ -2815,7 +2767,7 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
                   prevMonthButtonDisabled: n,
                   nextMonthButtonDisabled: a,
                   prevYearButtonDisabled: o,
-                  nextYearButtonDisabled: i
+                  nextYearButtonDisabled: s
                 })
               ),
               !r.props.showMonthYearPicker &&
@@ -2852,26 +2804,26 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
               ++a
             ) {
               var o = a - r.props.monthSelectedIn,
-                i = addMonths(n, o),
-                s = "month-".concat(a);
+                s = addMonths(n, o),
+                i = "month-".concat(a);
               e.push(
                 React.createElement(
                   "div",
                   {
-                    key: s,
+                    key: i,
                     ref: function(e) {
                       r.monthContainer = e;
                     },
                     className: "react-datepicker__month-container"
                   },
                   r.props.renderCustomHeader
-                    ? r.renderCustomHeader({ monthDate: i, i: a })
+                    ? r.renderCustomHeader({ monthDate: s, i: a })
                     : r.props.showMonthYearPicker
-                    ? r.renderYearHeader({ monthDate: i, i: a })
-                    : r.renderDefaultHeader({ monthDate: i, i: a }),
+                    ? r.renderYearHeader({ monthDate: s, i: a })
+                    : r.renderDefaultHeader({ monthDate: s, i: a }),
                   React.createElement(Month, {
                     onChange: r.changeMonthYear,
-                    day: i,
+                    day: s,
                     dayClassName: r.props.dayClassName,
                     onDayClick: r.handleDayClick,
                     onDayMouseEnter: r.handleDayMouseEnter,
@@ -3067,15 +3019,15 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
                 n = t.wrapperClassName,
                 a = t.hidePopper,
                 o = t.popperComponent,
-                i = t.popperModifiers,
-                s = t.popperPlacement,
+                s = t.popperModifiers,
+                i = t.popperPlacement,
                 p = t.popperProps,
                 c = t.targetComponent;
               if (!a) {
-                var d = classnames("react-datepicker-popper", r);
+                var l = classnames("react-datepicker-popper", r);
                 e = React.createElement(
                   reactPopper.Popper,
-                  _extends({ modifiers: i, placement: s }, p),
+                  _extends({ modifiers: s, placement: i }, p),
                   function(e) {
                     var t = e.ref,
                       r = e.style,
@@ -3085,7 +3037,7 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
                       "div",
                       _extends(
                         { ref: t, style: r },
-                        { className: d, "data-placement": n }
+                        { className: l, "data-placement": n }
                       ),
                       React.cloneElement(o, { arrowProps: a })
                     );
@@ -3094,7 +3046,7 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
               }
               this.props.popperContainer &&
                 (e = React.createElement(this.props.popperContainer, {}, e));
-              var l = classnames("react-datepicker-wrapper", n);
+              var d = classnames("react-datepicker-wrapper", n);
               return React.createElement(
                 reactPopper.Manager,
                 { className: "react-datepicker-manager" },
@@ -3102,7 +3054,7 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
                   var t = e.ref;
                   return React.createElement(
                     "div",
-                    { ref: t, className: l },
+                    { ref: t, className: d },
                     c
                   );
                 }),
@@ -3329,12 +3281,12 @@ var INPUT_ERR_1 = "Date input not valid.",
             if (!isEqual(r.props.selected, o) || r.props.allowSameDay) {
               if (null !== o) {
                 if (r.props.selected) {
-                  var i = r.props.selected;
-                  n && (i = newDate(o)),
+                  var s = r.props.selected;
+                  n && (s = newDate(o)),
                     (o = setTime(o, {
-                      hour: getHours(i),
-                      minute: getMinutes(i),
-                      second: getSeconds(i)
+                      hour: getHours(s),
+                      minute: getMinutes(s),
+                      second: getSeconds(s)
                     }));
                 }
                 r.props.inline || r.setState({ preSelection: o }),
