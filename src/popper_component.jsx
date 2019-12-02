@@ -2,6 +2,7 @@ import classnames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
 import { Manager, Reference, Popper, placements } from "react-popper";
+import { createPortal } from "react-dom";
 
 export const popperPlacementPositions = placements;
 
@@ -49,7 +50,7 @@ export default class PopperComponent extends React.Component {
 
     if (!hidePopper) {
       const classes = classnames("react-datepicker-popper", className);
-      popper = (
+      popper = createPortal(
         <Popper
           modifiers={popperModifiers}
           placement={popperPlacement}
@@ -64,7 +65,8 @@ export default class PopperComponent extends React.Component {
               {React.cloneElement(popperComponent, { arrowProps })}
             </div>
           )}
-        </Popper>
+        </Popper>,
+        document.body
       );
     }
 

@@ -72,7 +72,8 @@ var dfIsEqual = _interopDefault(require("date-fns/isEqual")),
     require("date-fns/_lib/format/longFormatters")
   ),
   onClickOutside = _interopDefault(require("react-onclickoutside")),
-  reactPopper = require("react-popper");
+  reactPopper = require("react-popper"),
+  reactDom = require("react-dom");
 function _typeof(e) {
   return (_typeof =
     "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
@@ -3025,23 +3026,26 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
                 c = t.targetComponent;
               if (!a) {
                 var l = classnames("react-datepicker-popper", r);
-                e = React.createElement(
-                  reactPopper.Popper,
-                  _extends({ modifiers: s, placement: i }, p),
-                  function(e) {
-                    var t = e.ref,
-                      r = e.style,
-                      n = e.placement,
-                      a = e.arrowProps;
-                    return React.createElement(
-                      "div",
-                      _extends(
-                        { ref: t, style: r },
-                        { className: l, "data-placement": n }
-                      ),
-                      React.cloneElement(o, { arrowProps: a })
-                    );
-                  }
+                e = reactDom.createPortal(
+                  React.createElement(
+                    reactPopper.Popper,
+                    _extends({ modifiers: s, placement: i }, p),
+                    function(e) {
+                      var t = e.ref,
+                        r = e.style,
+                        n = e.placement,
+                        a = e.arrowProps;
+                      return React.createElement(
+                        "div",
+                        _extends(
+                          { ref: t, style: r },
+                          { className: l, "data-placement": n }
+                        ),
+                        React.cloneElement(o, { arrowProps: a })
+                      );
+                    }
+                  ),
+                  document.body
                 );
               }
               this.props.popperContainer &&
