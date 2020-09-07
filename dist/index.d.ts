@@ -141,6 +141,7 @@ export interface ReactDatePickerProps {
     showTimeInput?: boolean;
     inlineFocusSelectedMonth?: boolean;
     onDayMouseEnter?: (date: Date) => void;
+    onMonthMouseEnter?: (date: Date) => void;
     onMonthMouseLeave?: () => void;
 }
 

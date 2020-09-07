@@ -32,8 +32,8 @@ var subDays = _interopDefault(require("date-fns/subDays")),
   setSeconds = _interopDefault(require("date-fns/setSeconds")),
   setMinutes = _interopDefault(require("date-fns/setMinutes")),
   setHours = _interopDefault(require("date-fns/setHours")),
-  utils$2 = _interopDefault(require("date-fns/setMonth")),
-  utils$3 = _interopDefault(require("date-fns/setQuarter")),
+  setMonth = _interopDefault(require("date-fns/setMonth")),
+  utils$2 = _interopDefault(require("date-fns/setQuarter")),
   setYear = _interopDefault(require("date-fns/setYear")),
   min = _interopDefault(require("date-fns/min")),
   max = _interopDefault(require("date-fns/max")),
@@ -345,13 +345,13 @@ function getWeekdayShortInLocale(e, t) {
   return formatDate(e, "EEE", t);
 }
 function getMonthInLocale(e, t) {
-  return formatDate(utils$2(newDate(), e), "LLLL", t);
+  return formatDate(setMonth(newDate(), e), "LLLL", t);
 }
 function getMonthShortInLocale(e, t) {
-  return formatDate(utils$2(newDate(), e), "LLL", t);
+  return formatDate(setMonth(newDate(), e), "LLL", t);
 }
 function getQuarterShortInLocale(e, t) {
-  return formatDate(utils$3(newDate(), e), "QQQ", t);
+  return formatDate(utils$2(newDate(), e), "QQQ", t);
 }
 function isDayDisabled(e) {
   var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
@@ -1780,7 +1780,7 @@ var MonthYearDropdownOptions = (function(e) {
               n = t.day,
               a = t.startDate,
               o = t.endDate;
-            return !(!a || !o) && isSameMonth(utils$2(n, e), a);
+            return !(!a || !o) && isSameMonth(setMonth(n, e), a);
           }
         ),
         _defineProperty(
@@ -1791,7 +1791,7 @@ var MonthYearDropdownOptions = (function(e) {
               n = t.day,
               a = t.startDate,
               o = t.endDate;
-            return !(!a || !o) && isSameQuarter(utils$3(n, e), a);
+            return !(!a || !o) && isSameQuarter(utils$2(n, e), a);
           }
         ),
         _defineProperty(_assertThisInitialized(r), "isRangeEndMonth", function(
@@ -1801,7 +1801,7 @@ var MonthYearDropdownOptions = (function(e) {
             n = t.day,
             a = t.startDate,
             o = t.endDate;
-          return !(!a || !o) && isSameMonth(utils$2(n, e), o);
+          return !(!a || !o) && isSameMonth(setMonth(n, e), o);
         }),
         _defineProperty(
           _assertThisInitialized(r),
@@ -1811,7 +1811,7 @@ var MonthYearDropdownOptions = (function(e) {
               n = t.day,
               a = t.startDate,
               o = t.endDate;
-            return !(!a || !o) && isSameQuarter(utils$3(n, e), o);
+            return !(!a || !o) && isSameQuarter(utils$2(n, e), o);
           }
         ),
         _defineProperty(_assertThisInitialized(r), "isWeekInMonth", function(
@@ -1877,13 +1877,13 @@ var MonthYearDropdownOptions = (function(e) {
           e,
           t
         ) {
-          r.handleDayClick(getStartOfMonth(utils$2(r.props.day, t)), e);
+          r.handleDayClick(getStartOfMonth(setMonth(r.props.day, t)), e);
         }),
         _defineProperty(_assertThisInitialized(r), "onQuarterClick", function(
           e,
           t
         ) {
-          r.handleDayClick(getStartOfQuarter(utils$3(r.props.day, t)), e);
+          r.handleDayClick(getStartOfQuarter(utils$2(r.props.day, t)), e);
         }),
         _defineProperty(
           _assertThisInitialized(r),
@@ -1901,7 +1901,7 @@ var MonthYearDropdownOptions = (function(e) {
               "react-datepicker__month-".concat(e),
               {
                 "react-datepicker__month--disabled":
-                  (i || p) && isMonthDisabled(utils$2(n, e), r.props),
+                  (i || p) && isMonthDisabled(setMonth(n, e), r.props),
                 "react-datepicker__month--selected":
                   getMonth(n) === e && getYear(n) === getYear(s),
                 "react-datepicker__month--in-range": isMonthinRange(a, o, e, n),
@@ -1927,7 +1927,7 @@ var MonthYearDropdownOptions = (function(e) {
               "react-datepicker__quarter-".concat(e),
               {
                 "react-datepicker__quarter--disabled":
-                  (i || p) && isQuarterDisabled(utils$3(n, e), r.props),
+                  (i || p) && isQuarterDisabled(utils$2(n, e), r.props),
                 "react-datepicker__quarter--selected":
                   getQuarter(n) === e && getYear(n) === getYear(s),
                 "react-datepicker__quarter--in-range": isQuarterInRange(
@@ -1959,6 +1959,9 @@ var MonthYearDropdownOptions = (function(e) {
                   "div",
                   {
                     key: t,
+                    onMouseEnter: function() {
+                      r.props.onMouseEnter && r.props.onMouseEnter(e);
+                    },
                     onClick: function(t) {
                       r.onMonthClick(t, e);
                     },
@@ -2404,6 +2407,15 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
         ),
         _defineProperty(
           _assertThisInitialized(r),
+          "handleMonthMouseEnter",
+          function(e) {
+            var t = getStartOfMonth(setMonth(r.state.date, e));
+            console.log(t),
+              r.props.onMonthMouseEnter && r.props.onMonthMouseEnter(t);
+          }
+        ),
+        _defineProperty(
+          _assertThisInitialized(r),
           "handleMonthMouseLeave",
           function() {
             r.setState({ selectingDate: null }),
@@ -2447,7 +2459,7 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
           r.setState(
             function(t) {
               var r = t.date;
-              return { date: utils$2(r, e) };
+              return { date: setMonth(r, e) };
             },
             function() {
               return r.handleMonthChange(r.state.date);
@@ -2460,7 +2472,7 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
           r.setState(
             function(t) {
               var r = t.date;
-              return { date: setYear(utils$2(r, getMonth(e)), getYear(e)) };
+              return { date: setYear(setMonth(r, getMonth(e)), getYear(e)) };
             },
             function() {
               return r.handleMonthYearChange(r.state.date);
@@ -2828,6 +2840,7 @@ var DROPDOWN_FOCUS_CLASSNAMES = [
                     dayClassName: r.props.dayClassName,
                     onDayClick: r.handleDayClick,
                     onDayMouseEnter: r.handleDayMouseEnter,
+                    onMouseEnter: r.handleMonthMouseEnter,
                     onMouseLeave: r.handleMonthMouseLeave,
                     onWeekSelect: r.props.onWeekSelect,
                     orderInDisplay: a,
@@ -3491,6 +3504,7 @@ var INPUT_ERR_1 = "Date input not valid.",
                     popperProps: r.props.popperProps,
                     renderDayContents: r.props.renderDayContents,
                     onDayMouseEnter: r.props.onDayMouseEnter,
+                    onMonthMouseEnter: r.props.onMonthMouseEnter,
                     onMonthMouseLeave: r.props.onMonthMouseLeave,
                     showTimeInput: r.props.showTimeInput,
                     showMonthYearPicker: r.props.showMonthYearPicker,

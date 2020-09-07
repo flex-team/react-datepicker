@@ -16,6 +16,7 @@ import {
   subMonths,
   getStartOfWeek,
   getStartOfToday,
+  getStartOfMonth,
   addDays,
   formatDate,
   setYear,
@@ -131,6 +132,7 @@ export default class Calendar extends React.Component {
     renderCustomHeader: PropTypes.func,
     renderDayContents: PropTypes.func,
     onDayMouseEnter: PropTypes.func,
+    onMonthMouseEnter: PropTypes.func,
     onMonthMouseLeave: PropTypes.func,
     showPopperArrow: PropTypes.bool
   };
@@ -249,6 +251,11 @@ export default class Calendar extends React.Component {
   handleDayMouseEnter = day => {
     this.setState({ selectingDate: day });
     this.props.onDayMouseEnter && this.props.onDayMouseEnter(day);
+  };
+
+  handleMonthMouseEnter = (month: number) => {
+    const date = getStartOfMonth(setMonth(this.state.date, month));
+    this.props.onMonthMouseEnter && this.props.onMonthMouseEnter(date);
   };
 
   handleMonthMouseLeave = () => {
@@ -655,6 +662,7 @@ export default class Calendar extends React.Component {
             dayClassName={this.props.dayClassName}
             onDayClick={this.handleDayClick}
             onDayMouseEnter={this.handleDayMouseEnter}
+            onMouseEnter={this.handleMonthMouseEnter}
             onMouseLeave={this.handleMonthMouseLeave}
             onWeekSelect={this.props.onWeekSelect}
             orderInDisplay={i}
