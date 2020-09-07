@@ -28,6 +28,7 @@ export default class Month extends React.Component {
     minDate: PropTypes.instanceOf(Date),
     onDayClick: PropTypes.func,
     onDayMouseEnter: PropTypes.func,
+    onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     onWeekSelect: PropTypes.func,
     peekNextMonth: PropTypes.bool,
@@ -234,12 +235,22 @@ export default class Month extends React.Component {
   };
 
   renderMonths = () => {
-    const months = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]];
+    const months = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [9, 10, 11]
+    ];
     return months.map((month, i) => (
       <div className="react-datepicker__month-wrapper" key={i}>
         {month.map((m, j) => (
           <div
             key={j}
+            onMouseEnter={() => {
+              if (this.props.onMouseEnter) {
+                this.props.onMouseEnter(m);
+              }
+            }}
             onClick={ev => {
               this.onMonthClick(ev, m);
             }}

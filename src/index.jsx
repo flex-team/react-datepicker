@@ -174,6 +174,7 @@ export default class DatePicker extends React.Component {
     wrapperClassName: PropTypes.string,
     inlineFocusSelectedMonth: PropTypes.bool,
     onDayMouseEnter: PropTypes.func,
+    onMonthMouseEnter: PropTypes.func,
     onMonthMouseLeave: PropTypes.func,
     showPopperArrow: PropTypes.bool
   };
@@ -716,6 +717,7 @@ export default class DatePicker extends React.Component {
         popperProps={this.props.popperProps}
         renderDayContents={this.props.renderDayContents}
         onDayMouseEnter={this.props.onDayMouseEnter}
+        onMonthMouseEnter={this.props.onMonthMouseEnter}
         onMonthMouseLeave={this.props.onMonthMouseLeave}
         showTimeInput={this.props.showTimeInput}
         showMonthYearPicker={this.props.showMonthYearPicker}
