@@ -3,8 +3,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Manager, Reference, Popper, placements } from "react-popper";
 import { createPortal } from "react-dom";
-import { Manager, Reference, Popper } from "react-popper";
-import { placements } from "@popperjs/core/lib";
 import TabLoop from "./tab_loop";
 import Portal from "./portal";
 
