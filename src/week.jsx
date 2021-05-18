@@ -11,9 +11,12 @@ export default class Week extends React.Component {
     };
   }
   static propTypes = {
+    ariaLabelPrefix: PropTypes.string,
     disabledKeyboardNavigation: PropTypes.bool,
     day: PropTypes.instanceOf(Date).isRequired,
     dayClassName: PropTypes.func,
+    disabledDayAriaLabelPrefix: PropTypes.string,
+    chooseDayAriaLabelPrefix: PropTypes.string,
     endDate: PropTypes.instanceOf(Date),
     excludeDates: PropTypes.array,
     filterDate: PropTypes.func,
@@ -21,11 +24,13 @@ export default class Week extends React.Component {
     highlightDates: PropTypes.instanceOf(Map),
     includeDates: PropTypes.array,
     inline: PropTypes.bool,
+    shouldFocusDayInline: PropTypes.bool,
     locale: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.shape({ locale: PropTypes.object })
     ]),
     maxDate: PropTypes.instanceOf(Date),
+    calendarStartDay: PropTypes.number,
     minDate: PropTypes.instanceOf(Date),
     month: PropTypes.number,
     onDayClick: PropTypes.func,
@@ -36,11 +41,20 @@ export default class Week extends React.Component {
     selectingDate: PropTypes.instanceOf(Date),
     selectsEnd: PropTypes.bool,
     selectsStart: PropTypes.bool,
+    selectsRange: PropTypes.bool,
     showWeekNumber: PropTypes.bool,
     startDate: PropTypes.instanceOf(Date),
     setOpen: PropTypes.func,
     shouldCloseOnSelect: PropTypes.bool,
-    renderDayContents: PropTypes.func
+    renderDayContents: PropTypes.func,
+    handleOnKeyDown: PropTypes.func,
+    isInputFocused: PropTypes.bool,
+    containerRef: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+    ]),
+    monthShowsDuplicateDaysEnd: PropTypes.bool,
+    monthShowsDuplicateDaysStart: PropTypes.bool
   };
 
   handleDayClick = (day, event) => {
@@ -72,7 +86,7 @@ export default class Week extends React.Component {
   };
 
   renderDays = () => {
-    const startOfWeek = utils.getStartOfWeek(this.props.day, this.props.locale);
+    const startOfWeek = utils.getStartOfWeek(this.props.day, this.props.locale, this.props.calendarStartDay);
     const days = [];
     const weekNumber = this.formatWeekNumber(startOfWeek);
     if (this.props.showWeekNumber) {
@@ -80,7 +94,12 @@ export default class Week extends React.Component {
         ? this.handleWeekClick.bind(this, startOfWeek, weekNumber)
         : undefined;
       days.push(
-        <WeekNumber key="W" weekNumber={weekNumber} onClick={onClickAction} />
+        <WeekNumber
+          key="W"
+          weekNumber={weekNumber}
+          onClick={onClickAction}
+          ariaLabelPrefix={this.props.ariaLabelPrefix}
+        />
       );
     }
     return days.concat(
@@ -88,7 +107,9 @@ export default class Week extends React.Component {
         const day = utils.addDays(startOfWeek, offset);
         return (
           <Day
-            key={offset}
+            ariaLabelPrefixWhenEnabled={this.props.chooseDayAriaLabelPrefix}
+            ariaLabelPrefixWhenDisabled={this.props.disabledDayAriaLabelPrefix}
+            key={day.valueOf()}
             day={day}
             month={this.props.month}
             onClick={this.handleDayClick.bind(this, day)}
@@ -97,7 +118,6 @@ export default class Week extends React.Component {
             maxDate={this.props.maxDate}
             excludeDates={this.props.excludeDates}
             includeDates={this.props.includeDates}
-            inline={this.props.inline}
             highlightDates={this.props.highlightDates}
             selectingDate={this.props.selectingDate}
             filterDate={this.props.filterDate}
@@ -105,11 +125,19 @@ export default class Week extends React.Component {
             selected={this.props.selected}
             selectsStart={this.props.selectsStart}
             selectsEnd={this.props.selectsEnd}
+            selectsRange={this.props.selectsRange}
             startDate={this.props.startDate}
             endDate={this.props.endDate}
             dayClassName={this.props.dayClassName}
             renderDayContents={this.props.renderDayContents}
             disabledKeyboardNavigation={this.props.disabledKeyboardNavigation}
+            handleOnKeyDown={this.props.handleOnKeyDown}
+            isInputFocused={this.props.isInputFocused}
+            containerRef={this.props.containerRef}
+            inline={this.props.inline}
+            shouldFocusDayInline={this.props.shouldFocusDayInline}
+            monthShowsDuplicateDaysEnd={this.props.monthShowsDuplicateDaysEnd}
+            monthShowsDuplicateDaysStart={this.props.monthShowsDuplicateDaysStart}
           />
         );
       })

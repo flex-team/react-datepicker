@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import PropTypes from "prop-types";
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live";
 import DatePicker, {
@@ -25,24 +25,27 @@ export default class CodeExampleComponent extends React.Component {
   }
 
   render() {
-    const { title, component } = this.props.example;
+    const { title, description, component } = this.props.example;
     return (
       <div
         id={`example-${slugify(title, { lower: true })}`}
         className="example"
       >
         <h2 className="example__heading">{title}</h2>
+        {description && <p>{description}</p>}
         <div className="row">
           <LiveProvider
             code={component.trim()}
             scope={{
+              // NB any globals added here should also be referenced in ../../examples/.eslintrc
               PropTypes,
               useState,
               DatePicker,
               CalendarContainer,
               ...DateFNS,
               range,
-              fi
+              fi,
+              forwardRef
             }}
             theme={prismGitHubTheme}
           >
